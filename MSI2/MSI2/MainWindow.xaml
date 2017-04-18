@@ -27,7 +27,7 @@
                 </ToolTip>
             </Label.ToolTip>
         </Label>
-        <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" />
+        <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadNetwConf_Click" />
 
     </Grid>
 </Window>

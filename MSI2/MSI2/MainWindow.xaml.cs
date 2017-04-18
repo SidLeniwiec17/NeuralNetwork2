@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MSI2.Content;
+using MSI2.FileContent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,11 @@ namespace MSI2
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void LoadNetwConf_Click(object sender, RoutedEventArgs e)
+        {
+            Network temporaryNetwork = IOTxtFile.LoadNetworkConfiguration();
         }
     }
 }
