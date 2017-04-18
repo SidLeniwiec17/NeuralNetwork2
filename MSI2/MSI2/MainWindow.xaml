@@ -1,8 +1,33 @@
 ﻿<Window x:Class="MSI2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="152" Width="250">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label ToolTipService.ShowDuration="12000" Content="Upoload Network Settings"  Grid.Column="0" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+            <Label.ToolTip>
+                <ToolTip >
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold">Txt file format</TextBlock>
+                        <TextBlock Text="Input vector length: &lt;in&gt;"/>
+                        <TextBlock Text="Output classes: &lt;on&gt;"/>
+                        <TextBlock Text="Hidden layers: &lt;n&gt;"/>
+                        <TextBlock Text="Neurons in each layer: &lt;m0, m1, ..., mn&gt;"/>
+                        <TextBlock Text="Bias: &lt;y/n&gt;"/>
+                        <TextBlock Text="Seed: &lt;s&gt;"/>
+                        <TextBlock Text="Iterations: &lt;i&gt;"/>
+                    </StackPanel>
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+        <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" />
+
     </Grid>
 </Window>
