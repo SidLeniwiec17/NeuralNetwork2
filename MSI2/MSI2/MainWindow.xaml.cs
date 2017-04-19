@@ -30,6 +30,7 @@ namespace MSI2
         private void LoadNetwConf_Click(object sender, RoutedEventArgs e)
         {
             Network temporaryNetwork = IOTxtFile.LoadNetworkConfiguration();
+            Console.WriteLine("testy");
         }
     }
 }

@@ -16,6 +16,7 @@ namespace MSI2.Content
         public int Seed { get; set; }
         public int Iterations { get; set; }
         public Layer[] Layers { get; set; }
+        public bool CompleteData { get; set; }
 
         public Network()
         {

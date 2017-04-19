@@ -10,7 +10,7 @@ namespace MSI2.Content
     {
         private int inputVal;
         private int outputVal;
-        private int[,] values;
+        private float[,] values;
 
         public int InputNeurons
         {
@@ -30,7 +30,7 @@ namespace MSI2.Content
                 outputVal = value;
             }
         }
-        public int[,] Values
+        public float[,] Values
         {
             get{
                 return values;
@@ -44,7 +44,7 @@ namespace MSI2.Content
         {
             this.inputVal = input;
             this.outputVal = output;
-            this.values = new int[input, output];
+            this.values = new float[output, input];
         }
     }
 }
