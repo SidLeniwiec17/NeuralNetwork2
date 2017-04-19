@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MSI2.Content
 {
+    [Serializable]
     public struct Layer
     {
         private int inputVal;

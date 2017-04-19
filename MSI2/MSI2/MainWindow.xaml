@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Label ToolTipService.ShowDuration="12000" Content="Upoload Network Settings"  Grid.Column="0" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
             <Label.ToolTip>
@@ -28,6 +29,28 @@
             </Label.ToolTip>
         </Label>
         <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadNetwConf_Click" />
+
+        <Label ToolTipService.ShowDuration="12000" Content="Save Existing Network"  Grid.Column="0" Grid.Row ="1" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+            <Label.ToolTip>
+                <ToolTip >
+                    <StackPanel>
+                        <TextBlock >Save existing (clean or learned) network into binary file.</TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+        <Button Content="Save !" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="SaveNetwork_Click" />
+
+        <Label ToolTipService.ShowDuration="12000" Content="Load Existing Network"  Grid.Column="0" Grid.Row ="2" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+            <Label.ToolTip>
+                <ToolTip >
+                    <StackPanel>
+                        <TextBlock>Load existing (clean or learned) network from binary file.</TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+        <Button Content="Load !" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadNetwork_Click" />
 
     </Grid>
 </Window>

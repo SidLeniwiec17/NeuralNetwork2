@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MSI2.Content
 {
+    [Serializable]
     public class Network
     {
         public int InputLength { get; set; }

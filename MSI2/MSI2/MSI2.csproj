@@ -64,6 +64,7 @@
     <Compile Include="Content\Layer.cs" />
     <Compile Include="Content\Network.cs" />
     <Compile Include="Content\NetworkHelper.cs" />
+    <Compile Include="FileContent\IOBinFile.cs" />
     <Compile Include="FileContent\IOTxtFile.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

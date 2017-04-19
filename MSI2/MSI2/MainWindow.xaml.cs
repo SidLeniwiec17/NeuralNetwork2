@@ -22,14 +22,34 @@ namespace MSI2
     /// </summary>
     public partial class MainWindow : Window
     {
+        Network globalNetwork;
         public MainWindow()
         {
             InitializeComponent();
+            globalNetwork = new Network();
         }
 
         private void LoadNetwConf_Click(object sender, RoutedEventArgs e)
         {
             Network temporaryNetwork = IOTxtFile.LoadNetworkConfiguration();
+            globalNetwork = temporaryNetwork;
+            Console.WriteLine("testy");
+        }
+        private void SaveNetwork_Click(object sender, RoutedEventArgs e)
+        {
+            if (globalNetwork.CompleteData)
+            {
+                IOBinFile.SaveBinary(globalNetwork);
+            }
+            else
+            {
+                MessageBox.Show("Network save aborted !");
+            }
+            Console.WriteLine("testy");
+        }
+        private void LoadNetwork_Click(object sender, RoutedEventArgs e)
+        {
+            globalNetwork = IOBinFile.LoadBinary();
             Console.WriteLine("testy");
         }
     }

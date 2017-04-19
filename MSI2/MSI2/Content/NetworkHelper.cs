@@ -13,6 +13,7 @@ namespace MSI2.Content
         {   
             if(network.CompleteData == true)
             {
+                network.CompleteData = false;
                 try
                 {
                     Random rand = new Random(network.Seed);
@@ -36,6 +37,7 @@ namespace MSI2.Content
                         }
                     }
                     network.Layers = layers;
+                    network.CompleteData = true;
                 }
                 catch (Exception ex)
                 {
