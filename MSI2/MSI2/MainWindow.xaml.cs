@@ -23,10 +23,16 @@ namespace MSI2
     public partial class MainWindow : Window
     {
         Network globalNetwork;
+        List<Face> learningSet;
+        List<Face> unknownSet;
+        List<Face> solution;
         public MainWindow()
         {
             InitializeComponent();
             globalNetwork = new Network();
+            learningSet = new List<Face>();
+            unknownSet = new List<Face>();
+            solution = new List<Face>();
         }
 
         private void LoadNetwConf_Click(object sender, RoutedEventArgs e)
@@ -51,6 +57,68 @@ namespace MSI2
         {
             globalNetwork = IOBinFile.LoadBinary();
             Console.WriteLine("testy");
+        }
+        private async void LoadPictConf_Click(object sender, RoutedEventArgs e)
+        {
+            //Zbior uczacy
+            BlakWait.Visibility = Visibility.Visible;
+            List<List<string>> pictures = FileLoader.GetImages(true);
+            await ConvertKnownPic(pictures);
+            BlakWait.Visibility = Visibility.Collapsed;
+        }
+        private void SavePict_Click(object sender, RoutedEventArgs e)
+        {
+            //Zbior uczacy
+            if (FileLoader.SaveBinary(learningSet) == 1)
+                Console.WriteLine("zapisano do binarki");
+        }
+        private void LoadPict_Click(object sender, RoutedEventArgs e)
+        {
+            //Zbior uczacy
+            learningSet.Clear();
+            learningSet = FileLoader.LoadBinary();
+            if (learningSet.Count >= 1)
+            {
+                Console.WriteLine("wczytano z binarki " + learningSet.Count + " danych");
+            }
+        }
+        private async void LoadPictTestConf_Click(object sender, RoutedEventArgs e)
+        {
+            //Zbior testowy
+            BlakWait.Visibility = Visibility.Visible;
+            List<List<string>> tempUnknownPictures = FileLoader.GetImages(false);
+            await ConvertUnKnownPic(tempUnknownPictures);
+            BlakWait.Visibility = Visibility.Collapsed;
+        }
+        private void SavePictTest_Click(object sender, RoutedEventArgs e)
+        {
+            //Zbior testowy
+            if (FileLoader.SaveBinary(unknownSet) == 1)
+                Console.WriteLine("zapisano do binarki");
+        }
+        private void LoadPictTest_Click(object sender, RoutedEventArgs e)
+        {
+            //Zbior testowy        
+            unknownSet.Clear();
+            unknownSet = FileLoader.LoadBinary();
+            if (unknownSet.Count >= 1)
+            {
+                Console.WriteLine("wczytano z binarki " + unknownSet.Count + " danych");
+            }
+        }
+        private async Task ConvertKnownPic(List<List<string>> pictures)
+        {
+            await Task.Run(() =>
+            {
+                learningSet = FaceHelper.ConvertFaces(pictures, true);
+            });
+        }
+        private async Task ConvertUnKnownPic(List<List<string>> tempUnknownPictures)
+        {
+            await Task.Run(() =>
+            {
+                unknownSet = FaceHelper.ConvertFaces(tempUnknownPictures, false);
+            });
         }
     }
 }

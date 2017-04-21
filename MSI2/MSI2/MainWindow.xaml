@@ -1,56 +1,172 @@
 ﻿<Window x:Class="MSI2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="152" Width="250">
+        Title="MainWindow" Height="500" Width="500">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label ToolTipService.ShowDuration="12000" Content="Upoload Network Settings"  Grid.Column="0" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
-            <Label.ToolTip>
-                <ToolTip >
-                    <StackPanel>
-                        <TextBlock FontWeight="Bold">Txt file format</TextBlock>
-                        <TextBlock Text="Input vector length: &lt;in&gt;"/>
-                        <TextBlock Text="Output classes: &lt;on&gt;"/>
-                        <TextBlock Text="Hidden layers: &lt;n&gt;"/>
-                        <TextBlock Text="Neurons in each layer: &lt;m0, m1, ..., mn&gt;"/>
-                        <TextBlock Text="Bias: &lt;y/n&gt;"/>
-                        <TextBlock Text="Seed: &lt;s&gt;"/>
-                        <TextBlock Text="Iterations: &lt;i&gt;"/>
-                    </StackPanel>
-                </ToolTip>
-            </Label.ToolTip>
-        </Label>
-        <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadNetwConf_Click" />
+        <GroupBox Grid.Row="0" Grid.Column="1" Header="Network Settings" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label ToolTipService.ShowDuration="12000" Content="Upoload Network Settings"  Grid.Column="0" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Txt file format</TextBlock>
+                                <TextBlock Text="Input vector length: &lt;in&gt;"/>
+                                <TextBlock Text="Output classes: &lt;on&gt;"/>
+                                <TextBlock Text="Hidden layers: &lt;n&gt;"/>
+                                <TextBlock Text="Neurons in each layer: &lt;m0, m1, ..., mn&gt;"/>
+                                <TextBlock Text="Bias: &lt;y/n&gt;"/>
+                                <TextBlock Text="Seed: &lt;s&gt;"/>
+                                <TextBlock Text="Iterations: &lt;i&gt;"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadNetwConf_Click" />
 
-        <Label ToolTipService.ShowDuration="12000" Content="Save Existing Network"  Grid.Column="0" Grid.Row ="1" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
-            <Label.ToolTip>
-                <ToolTip >
-                    <StackPanel>
-                        <TextBlock >Save existing (clean or learned) network into binary file.</TextBlock>
-                    </StackPanel>
-                </ToolTip>
-            </Label.ToolTip>
-        </Label>
-        <Button Content="Save !" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="SaveNetwork_Click" />
+                <Label ToolTipService.ShowDuration="12000" Content="Save Existing Network"  Grid.Column="0" Grid.Row ="1" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock >Save existing (clean or learned) network into binary file.</TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Save !" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="SaveNetwork_Click" />
 
-        <Label ToolTipService.ShowDuration="12000" Content="Load Existing Network"  Grid.Column="0" Grid.Row ="2" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
-            <Label.ToolTip>
-                <ToolTip >
-                    <StackPanel>
-                        <TextBlock>Load existing (clean or learned) network from binary file.</TextBlock>
-                    </StackPanel>
-                </ToolTip>
-            </Label.ToolTip>
-        </Label>
-        <Button Content="Load !" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadNetwork_Click" />
+                <Label ToolTipService.ShowDuration="12000" Content="Load Existing Network"  Grid.Column="0" Grid.Row ="2" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock>Load existing (clean or learned) network from binary file.</TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Load !" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadNetwork_Click" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="0" Grid.Column="0" Header="Input Learning Set Settings" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label ToolTipService.ShowDuration="12000" Content="Upoload Pictures"  Grid.Column="0" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Upload unanalised pictures</TextBlock>
+                                <TextBlock Text="Select a folder"/>
+                                <TextBlock Text="in which there are four"/>
+                                <TextBlock Text="another folders named:"/>
+                                <TextBlock Text="LK, BK, LM, BM"/>
+                                <TextBlock Text="containing as follow:"/>
+                                <TextBlock Text="beauty woman, unbeauty woman,"/>
+                                <TextBlock Text="beauty man and unbeauty man"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadPictConf_Click" />
 
+                <Label ToolTipService.ShowDuration="12000" Content="Save Pictures"  Grid.Column="0" Grid.Row ="1" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock >Save analised learning pictures into binary file.</TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Save !" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="SavePict_Click" />
+
+                <Label ToolTipService.ShowDuration="12000" Content="Load Pictures"  Grid.Column="0" Grid.Row ="2" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock>Load analised learning pictures from binary file.</TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Load !" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadPict_Click" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Grid.Column="0" Header="Input Testing Set Settings" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label ToolTipService.ShowDuration="12000" Content="Upoload Pictures"  Grid.Column="0" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Upload unanalised pictures</TextBlock>
+                                <TextBlock Text="Upload pictures that are"/>
+                                <TextBlock Text="unanalised."/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Upload !" Grid.Column="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadPictTestConf_Click" />
+
+                <Label ToolTipService.ShowDuration="12000" Content="Save Pictures"  Grid.Column="0" Grid.Row ="1" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock >Save analised testing pictures into binary file.</TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Save !" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="SavePictTest_Click" />
+
+                <Label ToolTipService.ShowDuration="12000" Content="Load Pictures"  Grid.Column="0" Grid.Row ="2" HorizontalAlignment="Right" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <Label.ToolTip>
+                        <ToolTip >
+                            <StackPanel>
+                                <TextBlock>Load analised testing pictures from binary file.</TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <Button Content="Load !" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadPictTest_Click" />
+            </Grid>
+        </GroupBox>
+        
+        <Border Name="BlakWait" BorderBrush="Black" BorderThickness="1" Background="#80000000" Visibility="Collapsed" Grid.RowSpan="3" Grid.ColumnSpan="3" >
+            <Grid>
+                <TextBlock Margin="0" TextWrapping="Wrap" Text="Please Wait..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="#7EFFFFFF"/>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
