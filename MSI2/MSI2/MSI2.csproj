@@ -69,6 +69,7 @@
     <Compile Include="Helpers\FaceHelper.cs" />
     <Compile Include="Content\Layer.cs" />
     <Compile Include="Content\Network.cs" />
+    <Compile Include="Helpers\LearningHelper.cs" />
     <Compile Include="Helpers\NetworkCalculation.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="FileContent\FileLoader.cs" />

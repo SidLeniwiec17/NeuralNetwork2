@@ -138,7 +138,7 @@ namespace MSI2
             if (learningSet.Count > 0 && globalNetwork.CompleteData == true)
             {
                 BlakWait.Visibility = Visibility.Visible;
-                DataSet data = new DataSet(learningSet);
+                DataSet data = new DataSet(learningSet, globalNetwork.Classes);
                 await PerformLearning(data);
                 BlakWait.Visibility = Visibility.Collapsed;
             }
