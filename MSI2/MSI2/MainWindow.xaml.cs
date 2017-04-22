@@ -87,7 +87,8 @@ namespace MSI2
         {
             //Zbior testowy
             BlakWait.Visibility = Visibility.Visible;
-            List<List<string>> tempUnknownPictures = FileLoader.GetImages(false);
+            List<List<string>> tempUnknownPictures = FileLoader.GetImages(true);
+            //await ConvertUnKnownPic(tempUnknownPictures);
             await ConvertUnKnownPic(tempUnknownPictures);
             BlakWait.Visibility = Visibility.Collapsed;
         }
@@ -118,7 +119,7 @@ namespace MSI2
         {
             await Task.Run(() =>
             {
-                unknownSet = FaceHelper.ConvertFaces(tempUnknownPictures, false);
+                unknownSet = FaceHelper.ConvertFaces(tempUnknownPictures, true);
             });
         }
 
@@ -131,6 +132,23 @@ namespace MSI2
                     float[] temp = NetworkCalculation.CalculateSingleRecord(globalNetwork, NetworkCalculation.VectorToFloat(learningSet[i].Gradients));
                 }
             }
+        }
+        private async void Button2_Click(object sender, RoutedEventArgs e)
+        {
+            if (learningSet.Count > 0 && globalNetwork.CompleteData == true)
+            {
+                BlakWait.Visibility = Visibility.Visible;
+                DataSet data = new DataSet(learningSet);
+                await PerformLearning(data);
+                BlakWait.Visibility = Visibility.Collapsed;
+            }
+        }
+        private async Task PerformLearning(DataSet data)
+        {
+            await Task.Run(() =>
+            {
+                LearningHelper.Learn(globalNetwork, data);
+            });
         }
     }
 }

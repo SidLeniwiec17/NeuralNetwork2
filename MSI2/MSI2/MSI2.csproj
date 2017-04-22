@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Content\DataSet.cs" />
     <Compile Include="Content\Face.cs" />
     <Compile Include="Helpers\DirectionTranslator.cs" />
     <Compile Include="Helpers\FaceHelper.cs" />

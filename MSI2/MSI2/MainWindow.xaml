@@ -131,8 +131,13 @@
                         <ToolTip >
                             <StackPanel>
                                 <TextBlock FontWeight="Bold">Upload unanalised pictures</TextBlock>
-                                <TextBlock Text="Upload pictures that are"/>
-                                <TextBlock Text="unanalised."/>
+                                <TextBlock Text="Select a folder"/>
+                                <TextBlock Text="in which there are four"/>
+                                <TextBlock Text="another folders named:"/>
+                                <TextBlock Text="LK, BK, LM, BM"/>
+                                <TextBlock Text="containing as follow:"/>
+                                <TextBlock Text="beauty woman, unbeauty woman,"/>
+                                <TextBlock Text="beauty man and unbeauty man"/>
                             </StackPanel>
                         </ToolTip>
                     </Label.ToolTip>
@@ -162,12 +167,13 @@
                 <Button Content="Load !" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadPictTest_Click" />
             </Grid>
         </GroupBox>
-        
+        <Button Content="Test" Grid.Column="1" HorizontalAlignment="Left" Margin="97,87,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="LEARN" Grid.Column="1" HorizontalAlignment="Left" Margin="97,87,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button2_Click"/>
         <Border Name="BlakWait" BorderBrush="Black" BorderThickness="1" Background="#80000000" Visibility="Collapsed" Grid.RowSpan="3" Grid.ColumnSpan="3" >
             <Grid>
                 <TextBlock Margin="0" TextWrapping="Wrap" Text="Please Wait..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="#7EFFFFFF"/>
             </Grid>
         </Border>
-        <Button Content="Test" Grid.Column="1" HorizontalAlignment="Left" Margin="97,87,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+       
     </Grid>
 </Window>

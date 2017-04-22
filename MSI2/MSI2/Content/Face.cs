@@ -12,7 +12,6 @@ namespace MSI2.Content
         public string Class { get; set; }
         public List<int> Gradients { get; set; }
         public string Path { get; set; }
-        public double Distance { get; set; }
         public int ClassIndex { get; set; }
 
         public Face()
@@ -40,15 +39,6 @@ namespace MSI2.Content
             this.Class = _face.Class;
             this.Gradients = _face.Gradients;
             this.Path = _face.Path;
-            this.Distance = _face.Distance;
-            this.ClassIndex = _face.ClassIndex;
-        }
-        public Face(Face _face, double distance)
-        {
-            this.Class = _face.Class;
-            this.Gradients = _face.Gradients;
-            this.Path = _face.Path;
-            this.Distance = distance;
             this.ClassIndex = _face.ClassIndex;
         }
         public bool Validate()

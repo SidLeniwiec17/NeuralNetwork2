@@ -9,6 +9,8 @@ namespace MSI2.Helpers
 {
     public class NetworkCalculation
     {
+        //4. Zbior testowy + liczenie bledu
+
         public static float[] CalculateSingleRecord (Network network, float[] inputVector)
         {
             float[] answer = new float[network.Classes];
