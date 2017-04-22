@@ -105,10 +105,10 @@ namespace MSI2.Content
 
         public static List<int> SmallGradientToBigGradient(int[,] smallGradient, int width, int height)
         {
-            //int gX = 2;
-            //int gY = 3;
-            int gX = 20;
-            int gY = 25;
+            int gX = 2;
+            int gY = 2;
+            //int gX = 20;
+            //int gY = 25;
             int dX = (width / gX);
             int dY = (height / gY);
             List<int> gradient = new List<int>();

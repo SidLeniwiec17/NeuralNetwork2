@@ -24,6 +24,8 @@ namespace MSI2.Content
                         Tuple<int, int> neurons = GetInAndOutNumber(network, i);
                         int input = neurons.Item1;
                         int output = neurons.Item2;
+                        if (network.Bias)
+                            input++;
 
                         layers[i] = new Layer(input, output);
 

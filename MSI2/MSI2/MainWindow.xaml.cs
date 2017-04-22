@@ -1,5 +1,6 @@
 ﻿using MSI2.Content;
 using MSI2.FileContent;
+using MSI2.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,6 +120,17 @@ namespace MSI2
             {
                 unknownSet = FaceHelper.ConvertFaces(tempUnknownPictures, false);
             });
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(learningSet.Count>0 && globalNetwork.CompleteData == true)
+            {
+                for(int i = 0 ; i < learningSet.Count ; i++)
+                {
+                    float[] temp = NetworkCalculation.CalculateSingleRecord(globalNetwork, NetworkCalculation.VectorToFloat(learningSet[i].Gradients));
+                }
+            }
         }
     }
 }
