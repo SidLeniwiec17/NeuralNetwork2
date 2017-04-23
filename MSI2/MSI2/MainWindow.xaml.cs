@@ -27,6 +27,7 @@ namespace MSI2
         List<Face> learningSet;
         List<Face> unknownSet;
         List<Face> solution;
+        List<float> errorsHistory;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +35,7 @@ namespace MSI2
             learningSet = new List<Face>();
             unknownSet = new List<Face>();
             solution = new List<Face>();
+            errorsHistory = new List<float>();
         }
 
         private void LoadNetwConf_Click(object sender, RoutedEventArgs e)
@@ -130,6 +132,7 @@ namespace MSI2
                 BlakWait.Visibility = Visibility.Visible;
                 DataSet data = new DataSet(learningSet, globalNetwork.Classes);
                 await PerformLearning(data);
+                LearningHelper.CreateErrorFile(errorsHistory);
                 BlakWait.Visibility = Visibility.Collapsed;
             }
         }
@@ -137,13 +140,19 @@ namespace MSI2
         {
             await Task.Run(() =>
             {
+                List<float> errorHistory = new List<float>();
                 Random rand = new Random(globalNetwork.Seed);
                 for (int i = 0; i < globalNetwork.Iterations; i++)
                 {
-                    LearningHelper.Learn(globalNetwork, data);
+                    float error = 0.0f;
+                    error = LearningHelper.Learn(globalNetwork, data);
                     LearningHelper.RandomizeSet(rand, data);
+                    Console.WriteLine("-----------------------------------------");
                     Console.WriteLine("Epoka " + i + " / " + globalNetwork.Iterations);
+                    Console.WriteLine("Error " + error + " %" );
+                    errorHistory.Add(error);
                 }
+                errorsHistory = errorHistory;
             });
         }
     }
