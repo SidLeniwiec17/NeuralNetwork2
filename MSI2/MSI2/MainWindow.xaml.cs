@@ -137,7 +137,13 @@ namespace MSI2
         {
             await Task.Run(() =>
             {
-                LearningHelper.Learn(globalNetwork, data);
+                Random rand = new Random(globalNetwork.Seed);
+                for (int i = 0; i < globalNetwork.Iterations; i++)
+                {
+                    LearningHelper.Learn(globalNetwork, data);
+                    LearningHelper.RandomizeSet(rand, data);
+                    Console.WriteLine("Epoka " + i + " / " + globalNetwork.Iterations);
+                }
             });
         }
     }

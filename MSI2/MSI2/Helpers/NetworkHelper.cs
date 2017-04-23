@@ -53,9 +53,13 @@ namespace MSI2.Content
         {
             //float min = 0.0f;
             //float max = 1.0f;
+            float answ = 0.0f;
             float min = 0.2f;
             float max = 0.6f;
-            return min + ((float)rnd.NextDouble() * (max - min));
+            while(answ < min || answ > max)
+                answ = min + ((float)rnd.NextDouble() * (max - min));
+
+            return answ;
         }
 
         public static Tuple<int, int> GetInAndOutNumber(Network network, int i)

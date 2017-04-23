@@ -20,7 +20,6 @@ namespace MSI2.Helpers
                 float[] error = SquaredError(solution, data.Output[i].ToArray());
                 CalculateNodeErrors(placeForErrors, network, error);
                 ModifyWages(network, placeForErrors, placeForValues, error, NetworkCalculation.VectorToFloat(data.Input[i]), 0.05f);
-                Console.WriteLine("Zmodyfikowano wagi po zdjeciu " + i);
             }
             Console.WriteLine("Zmodyfikowano wagi");
         }
@@ -102,6 +101,28 @@ namespace MSI2.Helpers
                     }
                 }
             }
+        }
+        public static void RandomizeSet(Random rnd, DataSet data)
+        {
+            for(int i = 0 ; i < data.Input.Count ; i++)
+            {
+                int newPosition = NextPosition(rnd,data.Input.Count);
+                List<int> tmpInput = data.Input[newPosition];
+                List<int> tmpOutput = data.Output[newPosition];
+                data.Input[newPosition] = data.Input[i];
+                data.Output[newPosition] = data.Output[i];
+                data.Input[i] = tmpInput;
+                data.Output[i] = tmpOutput;
+            }
+        }
+        public static int NextPosition(Random rnd, int length)
+        {
+            //float min = 0.0f;
+            //float max = 1.0f;
+            int min = 0;
+            int max = length - 1;
+            int newPosition = rnd.Next(min, max);
+            return newPosition;
         }
     }
 }

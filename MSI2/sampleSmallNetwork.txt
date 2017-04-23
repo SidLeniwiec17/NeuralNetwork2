@@ -1,7 +1,7 @@
-Input vector length: <4>
+Input vector length: <616>
 Output classes: <4>
-Hidden layers: <1>
-Neurons in each layer: <2>
+Hidden layers: <2>
+Neurons in each layer: <50,10>
 Bias: <y>
 Seed: <2365>
-Iterations: <500>
+Iterations: <200>
