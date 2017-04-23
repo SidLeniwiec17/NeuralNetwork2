@@ -12,13 +12,35 @@ namespace MSI2.Helpers
         public static void Learn(Network network, DataSet data)
         {
             List<List<float>> placeForErrors = CreateNodesForErrors(network);
+            List<List<float>> placeForValues = CreateNodesForErrors(network);
             for(int i = 0 ; i < data.Input.Count ; i++)
             {
                 float[] solution = new float [network.Classes];
-                solution = NetworkCalculation.CalculateSingleRecord(network, NetworkCalculation.VectorToFloat(data.Input[i]));
+                solution = NetworkCalculation.CalculateSingleRecord(network, NetworkCalculation.VectorToFloat(data.Input[i]), placeForValues);
                 float[] error = SquaredError(solution, data.Output[i].ToArray());
                 CalculateNodeErrors(placeForErrors, network, error);
-
+                ModifyWages(network, placeForErrors, placeForValues, error, NetworkCalculation.VectorToFloat(data.Input[i]), 0.05f);
+                Console.WriteLine("Zmodyfikowano wagi po zdjeciu " + i);
+            }
+            Console.WriteLine("Zmodyfikowano wagi");
+        }
+        public static void ModifyWages(Network network, List<List<float>> placeForErrors, List<List<float>> placeForValues, float[] endError, float[] input, float learningFactor)
+        {
+            for(int i = 0 ; i < network.Layers.Length; i++)
+            {
+                for(int j = 0 ; j < network.Layers[i].InputNeurons ; j++)
+                {
+                    for(int q = 0 ; q < network.Layers[i].OutputNeurons ; q++)
+                    {
+                        //otrzymany input
+                        float y = 1.0f;
+                        if(j < placeForValues[i].Count)
+                            y = placeForValues[i][j];
+                        float newWage = 0.0f;
+                        newWage = learningFactor * (float)NetworkCalculation.SigmoidDerivative((double)y) * placeForErrors[i][j];
+                        network.Layers[i].Values[q, j] = network.Layers[i].Values[q, j] + newWage;
+                    }
+                }
             }
         }
         public static float[] SquaredError(float[]networkAnswer, int[]idealAnswer)
@@ -36,13 +58,16 @@ namespace MSI2.Helpers
             List<float> input = new List<float>();
             for (int j = 0; j < network.InputLength; j++)
                 input.Add(0.0f);
+            if(network.Bias)
+                input.Add(1.0f);
             errors.Add(input);
             for (int i = 0; i < network.HiddenLayers; i++ )
             {
                 List<float> innerList = new List<float>();
                 for (int j = 0; j < network.NeuronPerLayer[i]; j++)
                     innerList.Add(0.0f);
-
+                if (network.Bias)
+                    innerList.Add(1.0f);
                 errors.Add(innerList);
             }
                 return errors;
@@ -67,9 +92,12 @@ namespace MSI2.Helpers
                     for (int j = 0; j < placeForErrors[i].Count; j++)
                     {
                         placeForErrors[i][j] = 0.0f;
-                        for (int q = 0; q < placeForErrors[i+1].Count; q++)
+                        int nextLayerNodes = placeForErrors[i + 1].Count;
+                        if (network.Bias)
+                            nextLayerNodes--;
+                        for (int q = 0; q < nextLayerNodes; q++)
                         {
-                            placeForErrors[i][j] += placeForErrors[i + 1][q] * network.Layers[i].Values[q, j];
+                            placeForErrors[i][j] += placeForErrors[i + 1][q] * network.Layers[i].Values[q,j];
                         }
                     }
                 }

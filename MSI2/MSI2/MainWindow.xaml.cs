@@ -123,16 +123,6 @@ namespace MSI2
             });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if(learningSet.Count>0 && globalNetwork.CompleteData == true)
-            {
-                for(int i = 0 ; i < learningSet.Count ; i++)
-                {
-                    float[] temp = NetworkCalculation.CalculateSingleRecord(globalNetwork, NetworkCalculation.VectorToFloat(learningSet[i].Gradients));
-                }
-            }
-        }
         private async void Button2_Click(object sender, RoutedEventArgs e)
         {
             if (learningSet.Count > 0 && globalNetwork.CompleteData == true)
