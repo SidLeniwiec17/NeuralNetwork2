@@ -10,29 +10,34 @@ namespace MSI2.Helpers
 {
     public class LearningHelper
     {
+        /// DO POPRAWY
         public static float Learn(Network network, DataSet data)
         {
             float meanError = 0.0f;
-            List<List<float>> placeForErrors = CreateNodesForErrors(network);
+            List<List<float>> placeForDeltas = CreateNodesForErrors(network);
             List<List<float>> placeForValues = CreateNodesForErrors(network);
             for(int i = 0 ; i < data.Input.Count ; i++)
             {
                 float[] solution = new float [network.Classes];
                 solution = NetworkCalculation.CalculateSingleRecord(network, data.Input[i].ToArray(), placeForValues);
-                float[] error = SquaredError(solution, data.Output[i].ToArray());
+                float[] MSError = SquaredError(solution, data.Output[i].ToArray());
+                float[] lastDelta = LastLayerDelta(solution,data.Output[i].ToArray(),placeForValues[placeForValues.Count -1].ToArray());
                 float tmpError = 0.0f;
-                for (int j = 0; j < error.Length; j++)
-                    tmpError += error[j];
+                for (int j = 0; j < MSError.Length; j++)
+                    tmpError += MSError[j];
 
-                CalculateNodeErrors(placeForErrors, network, error);
-                ModifyWages(network, placeForErrors, placeForValues, error, data.Input[i].ToArray(), 0.01f);
+                CalculateNodeDeltas(placeForDeltas, network, lastDelta, placeForValues);
+                ModifyWages(network, placeForDeltas, placeForValues, 0.03f);
                 meanError += tmpError;
             }
             meanError = meanError / (float)data.Input.Count;
             return meanError;
             //Console.WriteLine("Zmodyfikowano wagi");
         }
-        public static void ModifyWages(Network network, List<List<float>> placeForErrors, List<List<float>> placeForValues, float[] endError, float[] input, float learningFactor)
+
+
+        // POPRAWIONO
+        public static void ModifyWages(Network network, List<List<float>> placeForDeltas, List<List<float>> placeForValues, float learningFactor)
         {
             //for(int i = 0 ; i < network.Layers.Length; i++)
             Parallel.For(0, network.Layers.Length, i =>
@@ -46,12 +51,49 @@ namespace MSI2.Helpers
                         if (j < placeForValues[i].Count)
                             y = placeForValues[i][j];
                         float newWage = 0.0f;
-                        newWage = learningFactor * (float)NetworkCalculation.SigmoidDerivative((double)y) * placeForErrors[i][j];
-                        network.Layers[i].Values[q, j] = network.Layers[i].Values[q, j] - newWage;
+                        newWage = ModifySingleWage(network.Layers[i].Values[q, j], placeForDeltas[i][j], placeForValues[i][j], learningFactor);
+                        network.Layers[i].Values[q, j] = newWage;
                     }
                 }
             });
         }
+
+
+        /// NEW
+        public static float[] LastLayerDelta(float[] networkAnswer, float[] idealAnswer, float [] input)
+        {
+            float[] d = new float[networkAnswer.Length];
+            for (int i = 0; i < d.Length; i++)
+            {
+                d[i] = (float)((networkAnswer[i] - idealAnswer[i]) * (float)NetworkCalculation.SigmoidDerivative(input[i]));
+            }
+            return d;
+        }
+        public static float ModifySingleWage(float oldWage, float delta, float prevOutput, float learningFactor)
+        {
+            float newWage = 0.0f;
+            float difference = delta * prevOutput * learningFactor;
+            return newWage = oldWage - difference;
+        }
+        public static float[] LayerDelta(List<float> oldDeltas, float [] input, Layer layer)
+        {
+            float[] d = new float[layer.InputNeurons];
+            for (int i = 0; i < layer.InputNeurons; i++)
+            {
+                d[i] = 0.0f;
+                for(int j = 0 ; j < layer.OutputNeurons ; j++)
+                {
+                    d[i] += oldDeltas[j] * layer.Values[j,i];
+                }
+                float tempInput = 1.0f;
+                if (i < layer.InputNeurons - 1)
+                    tempInput = input[i];
+                float derr = (float)NetworkCalculation.SigmoidDerivative(tempInput);
+                d[i] = d[i] * derr;
+            }
+            return d;
+        }
+
         public static float[] SquaredError(float[]networkAnswer, float[]idealAnswer)
         {
             float[] d = new float[networkAnswer.Length];
@@ -79,39 +121,22 @@ namespace MSI2.Helpers
                     innerList.Add(1.0f);
                 errors.Add(innerList);
             }
-                return errors;
+            List<float> lastList = new List<float> ();
+            for (int i = 0; i < network.Classes; i++)
+                lastList.Add(0.0f);
+            errors.Add(lastList);
+            return errors;
         }
-        public static void CalculateNodeErrors(List<List<float>> placeForErrors, Network network, float[] endPointError)
+        //POPRAWIONO
+        public static void CalculateNodeDeltas(List<List<float>> placeForDeltas, Network network, float[] lastDelta, List<List<float>> placeForValues)
         {
-            for(int i = placeForErrors.Count - 1 ; i >= 0  ; i--)
+            
+            for (int i = placeForDeltas.Count - 1; i >= 0; i--)
             {
-                if(i == placeForErrors.Count - 1)
-                {
-                    //for(int j = 0 ; j < placeForErrors[i].Count ; j++)
-                    Parallel.For(0, placeForErrors[i].Count, j =>
-                    {
-                        placeForErrors[i][j] = 0.0f;
-                        for (int q = 0; q < endPointError.Length; q++)
-                        {
-                            placeForErrors[i][j] += endPointError[q] * network.Layers[network.Layers.Length - 1].Values[q, j];
-                        }
-                    });
-                }
+                if (i < placeForDeltas.Count - 1)
+                    placeForDeltas[i] = LayerDelta(placeForDeltas[i + 1], placeForValues[i].ToArray(), network.Layers[i]).ToList();
                 else
-                {
-                    //for (int j = 0; j < placeForErrors[i].Count; j++)
-                    Parallel.For(0, placeForErrors[i].Count, j =>
-                    {
-                        placeForErrors[i][j] = 0.0f;
-                        int nextLayerNodes = placeForErrors[i + 1].Count;
-                        if (network.Bias)
-                            nextLayerNodes--;
-                        for (int q = 0; q < nextLayerNodes; q++)
-                        {
-                            placeForErrors[i][j] += placeForErrors[i + 1][q] * network.Layers[i].Values[q, j];
-                        }
-                    });
-                }
+                    placeForDeltas[i] = lastDelta.ToList();
             }
         }
         public static void RandomizeSet(Random rnd, DataSet data)

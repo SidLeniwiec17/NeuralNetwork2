@@ -16,6 +16,8 @@ namespace MSI2.Helpers
             float[] answer = new float[network.Classes];
             float[] previousNodesValues = new float[inputVector.Length];
             placeForValues[0] = inputVector.ToList();
+            if (network.Bias)
+                placeForValues[0].Add(1.0f);
             previousNodesValues = inputVector;
             float[] tempNodesValues = new float[network.NeuronPerLayer[0]];
             int outputNeurons = network.NeuronPerLayer[0];
@@ -47,9 +49,12 @@ namespace MSI2.Helpers
                     }
                     if(network.Bias)
                         tempNodesValues[j] += (1.0f * network.Layers[i].Values[j, previousNodesValues.Length]);
-                    tempNodesValues[j] = ActivationFunction(tempNodesValues[j]);
                     if (i + 1 < placeForValues.Count)
                         placeForValues[i+1][j] = tempNodesValues[j];
+                    else
+                        placeForValues[i][j] = tempNodesValues[j];
+
+                    tempNodesValues[j] = ActivationFunction(tempNodesValues[j]);
                 }
             }
             answer = tempNodesValues;
