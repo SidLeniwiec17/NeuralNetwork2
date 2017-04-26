@@ -11,13 +11,13 @@ namespace MSI2.Helpers
     {
         //4. Zbior testowy + liczenie bledu
 
-        public static float[] CalculateSingleRecord (Network network, float[] inputVector, List<List<float>> placeForValues)
+        public static float[] CalculateSingleRecord (Network network, float[] inputVector, List<List<float>> placeForOutputs)
         {
             float[] answer = new float[network.Classes];
             float[] previousNodesValues = new float[inputVector.Length];
-            placeForValues[0] = inputVector.ToList();
+            placeForOutputs[0] = inputVector.ToList();
             if (network.Bias)
-                placeForValues[0].Add(1.0f);
+                placeForOutputs[0].Add(1.0f);
             previousNodesValues = inputVector;
             float[] tempNodesValues = new float[network.NeuronPerLayer[0]];
             int outputNeurons = network.NeuronPerLayer[0];
@@ -49,12 +49,14 @@ namespace MSI2.Helpers
                     }
                     if(network.Bias)
                         tempNodesValues[j] += (1.0f * network.Layers[i].Values[j, previousNodesValues.Length]);
-                    if (i + 1 < placeForValues.Count)
-                        placeForValues[i+1][j] = tempNodesValues[j];
-                    else
-                        placeForValues[i][j] = tempNodesValues[j];
+
 
                     tempNodesValues[j] = ActivationFunction(tempNodesValues[j]);
+                    if (i + 1 < placeForOutputs.Count)
+                        placeForOutputs[i + 1][j] = tempNodesValues[j];
+                    else
+                        placeForOutputs[i][j] = tempNodesValues[j];
+
                 }
             }
             answer = tempNodesValues;
