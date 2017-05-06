@@ -48,6 +48,34 @@ namespace MSI2.FileContent
 
             return NetworkHelper.GenerateNetwork(network);
         }
+        public static Network LoadNetworkConfiguration(string dir)
+        {
+            Network network = new Network();
+            try
+            {
+                List<string> lines = new List<string>();
+                System.IO.StreamReader file =
+                    new System.IO.StreamReader(dir);
+
+                string line;
+                while ((line = file.ReadLine()) != null)
+                {
+                    lines.Add(line.ToLower().Replace(" ", string.Empty));
+                }
+                file.Close();
+                if (!ParseText(lines, network))
+                {
+                    MessageBox.Show("File has wrong format !");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ! " + ex.Message);
+            }
+            
+
+            return NetworkHelper.GenerateNetwork(network);
+        }
 
         public static bool ParseText (List<string> text, Network network)
         {
@@ -101,6 +129,12 @@ namespace MSI2.FileContent
                 return false;
             }
             network.Iterations = tempTuple.Item1;
+            Tuple<float, bool> tempTuple2 = TakeFloatFromBrackets(text[7]);
+            if (!text[7].Contains("learn") || tempTuple2.Item2 == false)
+            {
+                return false;
+            }
+            network.LearningFactor = tempTuple2.Item1;
             network.CompleteData = true;
 
             return correct;
@@ -119,6 +153,19 @@ namespace MSI2.FileContent
                 correct = false;
 
             return new Tuple<int, bool>(number, correct);
+        }
+        public static Tuple<float, bool> TakeFloatFromBrackets(string text)
+        {
+            float number = 0.0f;
+            bool correct = true;
+
+            int ind1 = text.IndexOf("<");
+            int ind2 = text.IndexOf(">");
+
+            string substring = text.Substring(ind1 + 1, ind2 - ind1 - 1);
+            correct = float.TryParse(substring, out number);
+
+            return new Tuple<float, bool>(number, correct);
         }
         public static Tuple<bool, bool> TakeBoolFromBrackets(string text)
         {

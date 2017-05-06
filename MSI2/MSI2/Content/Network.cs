@@ -18,6 +18,7 @@ namespace MSI2.Content
         public int Iterations { get; set; }
         public Layer[] Layers { get; set; }
         public bool CompleteData { get; set; }
+        public float LearningFactor { get; set; }
 
         public Network()
         {

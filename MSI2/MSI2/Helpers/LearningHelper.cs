@@ -27,7 +27,7 @@ namespace MSI2.Helpers
                     tmpError += MSError[j];
 
                 CalculateNodeErrors(placeForErrors, lastLayerError);
-                ModifyWages(network, placeForErrors, placeForOutputs, 0.005f);
+                ModifyWages(network, placeForErrors, placeForOutputs, network.LearningFactor);
                 meanError += tmpError;
             }
             meanError = meanError / (float)data.Input.Count;
@@ -140,6 +140,28 @@ namespace MSI2.Helpers
             string line = "";
             // Write the string to a file.
             System.IO.StreamWriter file = new System.IO.StreamWriter("errors.R");
+
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            line = "points<- c(";
+            int i = 0;
+            for (i = 0; i < errors.Count - 1; i++)
+            {
+                line += errors[i].ToString(nfi) + ",";
+            }
+            line += errors[i].ToString(nfi) + ")";
+            file.WriteLine(line);
+            file.WriteLine(@"plot(points , type= ""o"", col= ""red"")");
+            file.WriteLine(@"title(main= ""Error"", col.main= ""black"", font.main= 4)");
+
+            file.Close();
+        }
+        public static void CreateErrorFile(List<float> errors, string dir)
+        {
+            string line = "";
+            // Write the string to a file.
+            System.IO.StreamWriter file = new System.IO.StreamWriter(dir+"\\errors.R");
 
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";

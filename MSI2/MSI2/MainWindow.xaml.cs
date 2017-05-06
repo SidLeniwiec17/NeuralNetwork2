@@ -3,6 +3,7 @@ using MSI2.FileContent;
 using MSI2.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -131,29 +132,103 @@ namespace MSI2
             {
                 BlakWait.Visibility = Visibility.Visible;
                 DataSet data = new DataSet(learningSet, globalNetwork.Classes);
-                await PerformLearning(data);
+                await PerformLearning(data, globalNetwork);
                 LearningHelper.CreateErrorFile(errorsHistory);
                 BlakWait.Visibility = Visibility.Collapsed;
             }
         }
-        private async Task PerformLearning(DataSet data)
+        private async Task PerformLearning(DataSet data, Network network)
         {
             await Task.Run(() =>
             {
                 List<float> errorHistory = new List<float>();
-                Random rand = new Random(globalNetwork.Seed);
-                for (int i = 0; i < globalNetwork.Iterations; i++)
+                Random rand = new Random(network.Seed);
+                for (int i = 0; i < network.Iterations; i++)
                 {
                     float error = 0.0f;
-                    error = LearningHelper.Learn(globalNetwork, data);
+                    error = LearningHelper.Learn(network, data);
                     LearningHelper.RandomizeSet(rand, data);
                     Console.WriteLine("-----------------------------------------");
-                    Console.WriteLine("Epoka " + i + " / " + globalNetwork.Iterations);
-                    Console.WriteLine("Error " + error + " %" );
+                    Console.WriteLine("Epoka " + i + " / " + network.Iterations);
+                    Console.WriteLine("Error " + error + " %");
                     errorHistory.Add(error);
                 }
                 errorsHistory = errorHistory;
             });
+        }
+        public void Logger(String lines, string dir)
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(dir + "\\logs.txt", true);
+            file.WriteLine(lines);
+
+            file.Close();
+        }
+        private async Task PerformLearning(DataSet data, Network network, string dir, int index)
+        {
+            await Task.Run(() =>
+            {
+                List<float> errorHistory = new List<float>();
+                Random rand = new Random(network.Seed);
+                for (int i = 0; i < network.Iterations; i++)
+                {
+                    float error = 0.0f;
+                    error = LearningHelper.Learn(network, data);
+                    LearningHelper.RandomizeSet(rand, data);
+                    string txt = "";
+                    txt += "-----------------------------------------" + Environment.NewLine;
+                    string timer = string.Format("{0:dd.MM.yyyy_hh:mm:ss}",
+                    DateTime.Now);
+                    txt += timer + Environment.NewLine;
+                    txt += "Epoka " + i + " / " + network.Iterations + Environment.NewLine;
+                    txt += "Mean Squared Error " + error + " %" + Environment.NewLine;
+                    Logger(txt, dir);
+
+                    errorHistory.Add(error);
+                }
+                errorsHistory = errorHistory;
+
+                float testingError = TestingHelper.GetTestingSetError(network, new DataSet(unknownSet, network.Classes));
+                string txt2 = "";
+                txt2 += "-----------------------------------------" + Environment.NewLine;
+                txt2 += "------------FINAL TESTING ERROR----------" + Environment.NewLine;
+                txt2 += "-----------------------------------------n" + Environment.NewLine;
+                string timer2 = string.Format("{0:dd.MM.yyyy_hh:mm:ss}",
+                DateTime.Now);
+                txt2 += timer2 + Environment.NewLine;
+                txt2 += "Testing Error " + testingError + "%" + Environment.NewLine;
+                Logger(txt2, dir);
+
+                Console.WriteLine("-----------------------------------------------------");
+                Console.WriteLine(timer2 + ": test " + index + " przeprowadzono");
+
+            });
+        }
+        //-------------------------------------------------------------------
+        private async void Button3_Click(object sender, RoutedEventArgs e)
+        {
+            if (unknownSet.Count > 0 && learningSet.Count > 0)
+            {
+                string networkTestAddres = "D:\\MSI-TESTY\\Networks";
+                List<string> networksPaths = Directory.GetFiles(networkTestAddres).ToList();
+                for (int i = 0; i < networksPaths.Count; i++)
+                {
+                    string answersTestAddres = "D:\\MSI-TESTY\\Answers";
+                    string newPath = System.IO.Path.Combine(answersTestAddres, i.ToString());
+                    System.IO.Directory.CreateDirectory(newPath);
+                    Network temporaryNetwork = IOTxtFile.LoadNetworkConfiguration(networksPaths[i]);
+                    if (unknownSet.Count > 0 && learningSet.Count > 0 && temporaryNetwork.CompleteData == true)
+                    {
+                        BlakWait.Visibility = Visibility.Visible;
+                        DataSet data = new DataSet(learningSet, temporaryNetwork.Classes);
+
+                        await PerformLearning(data, temporaryNetwork, newPath, i);
+                        //zapisac siec + wynik
+                        IOBinFile.SaveBinary(temporaryNetwork, newPath + "\\learnedNetwork");
+                        LearningHelper.CreateErrorFile(errorsHistory, newPath);
+                        BlakWait.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
         }
     }
 }

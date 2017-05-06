@@ -15,7 +15,7 @@ namespace MSI2.FileContent
     {
         public static int SaveBinary(Network network)
         {
-            if (network.Layers.Length <1 || network.CompleteData == false)
+            if (network.Layers.Length < 1 || network.CompleteData == false)
             {
                 MessageBox.Show("Nie ma danych do zapisania");
                 return -1;
@@ -42,6 +42,17 @@ namespace MSI2.FileContent
             }
             return 1;
         }
+        public static int SaveBinary(Network network, string dir)
+        {
+            string filename = dir;
+            FileStream fs = new FileStream(filename, FileMode.Create);
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fs, network);
+            BinaryWriter w = new BinaryWriter(fs);
+            w.Close();
+            fs.Close();
+            return 1;
+        }
 
         public static Network LoadBinary()
         {
@@ -62,14 +73,14 @@ namespace MSI2.FileContent
                     fs.Close();
                     br.Close();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Load file error: "+ ex.Message);
+                    MessageBox.Show("Load file error: " + ex.Message);
                 }
             }
             else MessageBox.Show("No selected file !");
 
-            if(network.CompleteData == false)
+            if (network.CompleteData == false)
             {
                 network = new Network();
                 MessageBox.Show("Loaded network incomplete !");
