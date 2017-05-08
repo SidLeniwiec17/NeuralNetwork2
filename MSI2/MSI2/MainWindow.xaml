@@ -167,13 +167,26 @@
                 <Button Content="Load !" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5,5,5,5" VerticalAlignment="Center" Click="LoadPictTest_Click" />
             </Grid>
         </GroupBox>
-        <Button Content="LEARN" Grid.Column="1" HorizontalAlignment="Left" Margin="91,46,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button2_Click"/>
-        <Button Content="Run Tests" Grid.Column="1" HorizontalAlignment="Left" Margin="91,97,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button3_Click"/>
+        <Button Content="LEARN" Grid.Column="1" HorizontalAlignment="Left" Margin="91,49,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button2_Click"/>
+        <Button Content="Run Tests" Grid.Column="1" HorizontalAlignment="Left" Margin="91,151,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button3_Click"/>
+
+        <Button ToolTipService.ShowDuration="12000" Content="Select Location for tests" Grid.Column="1" HorizontalAlignment="Left" Margin="56,104,0,0" Grid.Row="1" VerticalAlignment="Top" Width="145" Click="Button4_Click">
+            <Button.ToolTip>
+                <ToolTip >
+                    <StackPanel>
+                        <TextBlock >Select folder for tests. Folder</TextBlock>
+                        <TextBlock Text="must contains two subfolders"/>
+                        <TextBlock Text="'Networks' - which contains networks"/>
+                        <TextBlock Text="configuration and 'Answers' "/>
+                        <TextBlock Text="- place for storing resuts. "/>
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
         <Border Name="BlakWait" BorderBrush="Black" BorderThickness="1" Background="#80000000" Visibility="Collapsed" Grid.RowSpan="3" Grid.ColumnSpan="3" >
             <Grid>
                 <TextBlock Margin="0" TextWrapping="Wrap" Text="Please Wait..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="#7EFFFFFF"/>
             </Grid>
         </Border>
-       
     </Grid>
 </Window>

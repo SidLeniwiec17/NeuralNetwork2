@@ -29,6 +29,7 @@ namespace MSI2
         List<Face> unknownSet;
         List<Face> solution;
         List<float> errorsHistory;
+        string testDir;
         public MainWindow()
         {
             InitializeComponent();
@@ -37,6 +38,7 @@ namespace MSI2
             unknownSet = new List<Face>();
             solution = new List<Face>();
             errorsHistory = new List<float>();
+            testDir = "";
         }
 
         private void LoadNetwConf_Click(object sender, RoutedEventArgs e)
@@ -91,7 +93,6 @@ namespace MSI2
             //Zbior testowy
             BlakWait.Visibility = Visibility.Visible;
             List<List<string>> tempUnknownPictures = FileLoader.GetImages(true);
-            //await ConvertUnKnownPic(tempUnknownPictures);
             await ConvertUnKnownPic(tempUnknownPictures);
             BlakWait.Visibility = Visibility.Collapsed;
         }
@@ -156,11 +157,14 @@ namespace MSI2
                 errorsHistory = errorHistory;
             });
         }
+
+        //-------------------------------------------------------------------
+        //--------------------------TESTING SECTION--------------------------
+        //-------------------------------------------------------------------
         public void Logger(String lines, string dir)
         {
             System.IO.StreamWriter file = new System.IO.StreamWriter(dir + "\\logs.txt", true);
             file.WriteLine(lines);
-
             file.Close();
         }
         private async Task PerformLearning(DataSet data, Network network, string dir, int index)
@@ -169,6 +173,7 @@ namespace MSI2
             {
                 List<float> errorHistory = new List<float>();
                 Random rand = new Random(network.Seed);
+                Logger(network.ToString(), dir);
                 for (int i = 0; i < network.Iterations; i++)
                 {
                     float error = 0.0f;
@@ -203,31 +208,48 @@ namespace MSI2
 
             });
         }
-        //-------------------------------------------------------------------
         private async void Button3_Click(object sender, RoutedEventArgs e)
         {
-            if (unknownSet.Count > 0 && learningSet.Count > 0)
+            if (unknownSet.Count > 0 && learningSet.Count > 0 && testDir.Length > 3)
             {
-                string networkTestAddres = "D:\\MSI-TESTY\\Networks";
-                List<string> networksPaths = Directory.GetFiles(networkTestAddres).ToList();
-                for (int i = 0; i < networksPaths.Count; i++)
+                try
                 {
-                    string answersTestAddres = "D:\\MSI-TESTY\\Answers";
-                    string newPath = System.IO.Path.Combine(answersTestAddres, i.ToString());
-                    System.IO.Directory.CreateDirectory(newPath);
-                    Network temporaryNetwork = IOTxtFile.LoadNetworkConfiguration(networksPaths[i]);
-                    if (unknownSet.Count > 0 && learningSet.Count > 0 && temporaryNetwork.CompleteData == true)
+                    string networkTestAddres = testDir + "\\Networks";
+                    List<string> networksPaths = Directory.GetFiles(networkTestAddres).ToList();
+                    for (int i = 0; i < networksPaths.Count; i++)
                     {
-                        BlakWait.Visibility = Visibility.Visible;
-                        DataSet data = new DataSet(learningSet, temporaryNetwork.Classes);
+                        string answersTestAddres = testDir + "\\Answers";
+                        string newPath = System.IO.Path.Combine(answersTestAddres, i.ToString());
+                        System.IO.Directory.CreateDirectory(newPath);
+                        Network temporaryNetwork = IOTxtFile.LoadNetworkConfiguration(networksPaths[i]);
+                        if (unknownSet.Count > 0 && learningSet.Count > 0 && temporaryNetwork.CompleteData == true)
+                        {
+                            BlakWait.Visibility = Visibility.Visible;
+                            DataSet data = new DataSet(learningSet, temporaryNetwork.Classes);
 
-                        await PerformLearning(data, temporaryNetwork, newPath, i);
-                        //zapisac siec + wynik
-                        IOBinFile.SaveBinary(temporaryNetwork, newPath + "\\learnedNetwork");
-                        LearningHelper.CreateErrorFile(errorsHistory, newPath);
-                        BlakWait.Visibility = Visibility.Collapsed;
+                            await PerformLearning(data, temporaryNetwork, newPath, i);
+                            //zapisac siec + wynik
+                            IOBinFile.SaveBinary(temporaryNetwork, newPath + "\\learnedNetwork");
+                            LearningHelper.CreateErrorFile(errorsHistory, newPath);
+                            BlakWait.Visibility = Visibility.Collapsed;
+                        }
                     }
                 }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show("Error ! Nie można przeprowadzić testów.");
+                }
+            }
+        }
+
+        private void Button4_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var path = folderBrowserDialog.SelectedPath;
+                if (path != null)
+                    testDir = path;
             }
         }
     }

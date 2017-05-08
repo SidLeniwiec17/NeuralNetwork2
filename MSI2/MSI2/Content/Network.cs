@@ -35,5 +35,20 @@ namespace MSI2.Content
             Iterations = iterations;
             Layers = layers;
         }
+        public string ToString()
+        {
+            string content = "Input vector length: <" + InputLength + ">" + Environment.NewLine;
+            content += "Output classes: <" + Classes + ">" + Environment.NewLine;
+            content += "Hidden layers: <" + HiddenLayers + ">" + Environment.NewLine;
+            string hlpString = "";
+            foreach (var i in NeuronPerLayer)
+                hlpString += i.ToString() + ",";
+            content += "Neurons in each layer: <" + hlpString + ">" + Environment.NewLine;
+            content += "Bias: <" + Bias.ToString() +">" + Environment.NewLine;
+            content += "Seed: <" + Seed + ">" + Environment.NewLine;
+            content += "Iterations: <" + Iterations + ">" + Environment.NewLine;
+            content += "Learning factor: <" + LearningFactor + ">" + Environment.NewLine;
+            return content;
+        }
     }
 }
