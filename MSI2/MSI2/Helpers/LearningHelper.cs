@@ -26,7 +26,7 @@ namespace MSI2.Helpers
                 for (int j = 0; j < MSError.Length; j++)
                     tmpError += MSError[j];
 
-                CalculateNodeErrors(placeForErrors, lastLayerError);
+                CalculateNodeErrors(placeForErrors, lastLayerError, network);
                 ModifyWages(network, placeForErrors, placeForOutputs, network.LearningFactor);
                 meanError += tmpError;
             }
@@ -98,7 +98,7 @@ namespace MSI2.Helpers
             errors.Add(lastList);
             return errors;
         }
-        public static void CalculateNodeErrors(List<List<float>> placeForErrors, float[] lastError)
+        public static void CalculateNodeErrors(List<List<float>> placeForErrors, float[] lastError, Network network)
         {
             placeForErrors[placeForErrors.Count - 1] = lastError.ToList();
             for (int i = placeForErrors.Count - 2; i >= 0; i--)
@@ -106,9 +106,9 @@ namespace MSI2.Helpers
                 for (int y = 0; y < placeForErrors[i].Count; y++)
                 {
                     placeForErrors[i][y] = 0.0f;
-                    for (int q = 0; q < placeForErrors[i + 1].Count; q++)
+                    for (int q = 0; q < placeForErrors[i + 1].Count - 1; q++)
                     {
-                        placeForErrors[i][y] += placeForErrors[i + 1][q];
+                        placeForErrors[i][y] += placeForErrors[i + 1][q] * network.Layers[i].Values[q,y];
                     }
                 }
             }

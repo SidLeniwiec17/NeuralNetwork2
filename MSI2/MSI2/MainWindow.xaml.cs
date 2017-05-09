@@ -196,7 +196,7 @@ namespace MSI2
                 string txt2 = "";
                 txt2 += "-----------------------------------------" + Environment.NewLine;
                 txt2 += "------------FINAL TESTING ERROR----------" + Environment.NewLine;
-                txt2 += "-----------------------------------------n" + Environment.NewLine;
+                txt2 += "-----------------------------------------" + Environment.NewLine;
                 string timer2 = string.Format("{0:dd.MM.yyyy_hh:mm:ss}",
                 DateTime.Now);
                 txt2 += timer2 + Environment.NewLine;

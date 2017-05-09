@@ -20,7 +20,7 @@ namespace MSI2.Content
                 Input.Add(Normalize(faces[i].Gradients));
                 List<float> answers = new List<float>();
                 for (int j = 0; j < classes; j++)
-                    answers.Add(0);
+                    answers.Add(0.0f);
                 answers[faces[i].ClassIndex] = 1.0f;
                 Output.Add(answers);
             }

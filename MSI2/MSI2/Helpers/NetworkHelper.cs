@@ -53,11 +53,14 @@ namespace MSI2.Content
         {
             //float min = 0.0f;
             //float max = 1.0f;
-            float answ = 0.0f;
-            float min = 0.001f;
-            float max = 0.01f;
-            while(answ < min || answ > max)
-                answ = min + ((float)rnd.NextDouble() * (max - min));
+            float answ = -1.0f;
+            float min = -0.4f;
+            float max = 0.4f;
+            while (answ < min || answ > max)
+            {
+                var tmpRnd = (float)rnd.NextDouble();
+                answ = min + (tmpRnd * (max - min));
+            }
 
             return answ;
         }
